@@ -25,10 +25,15 @@
             "aot": true,
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
+                "output": "/assets/"
+              }
             ],
             "styles": [
-              "src/styles.less"
+              "src/assets/styles/index.less"
             ],
             "scripts": []
           },
@@ -92,7 +97,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.less"
+              "src/assets/styles/index.less"
             ],
             "scripts": []
           }
@@ -123,6 +128,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "ng-wyy"
+    }
+  },
+  "defaultProject": "ng-wyy",
+  "cli": {
+    "analytics": "43dc175c-387f-4bd0-ac9c-7b2b2c2e6ef4"
+  }
 }
