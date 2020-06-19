@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { songSheet } from 'src/app/service/data Types/common.type';
 
 @Component({
@@ -8,6 +8,7 @@ import { songSheet } from 'src/app/service/data Types/common.type';
 })
 export class SingleSheetComponent implements OnInit {
   @Input() sheet: songSheet;
+  @Output() onPlay = new EventEmitter<number>();
 
   constructor() { }
 
@@ -16,6 +17,11 @@ export class SingleSheetComponent implements OnInit {
 
   get coverImg(): string {
     return this.sheet.picUrl || this.sheet.coverImgUrl;
+  }
+
+  playSheet(evt: MouseEvent, id: number){
+    evt.stopPropagation();
+    this.onPlay.emit(id);
   }
 
 }

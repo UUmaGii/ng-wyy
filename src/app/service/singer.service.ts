@@ -27,7 +27,7 @@ export class SingerService {
 
   getEnterSinger(args: SingerParams = defaultParms): Observable<singer[]>{
     const params = new HttpParams({ fromString: queryString.stringify(args)});
-    return this.http.get(this.url + '/artist/list', { params }).
+    return this.http.get(this.url + 'artist/list', { params }).
     pipe(map((res: {artists: singer[]}) => res.artists ));
   }
 

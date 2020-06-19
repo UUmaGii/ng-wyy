@@ -10,7 +10,7 @@ export const API_CONFIG = new InjectionToken('API_CONFIGURATION');
     CommonModule
   ],
   providers: [
-    {provide: API_CONFIG, useValue: 'http://localhost:3000'}
+    {provide: API_CONFIG, useValue: 'http://localhost:3000/'}
   ]
 })
 export class ServiceModule {}
