@@ -19,7 +19,6 @@ import { WyUiModule } from './wy-ui/wy-ui.module';
     FormsModule,
     NgZorroAntdModule,
     WyUiModule,
-   
   ]
 })
 export class SharedModule { }

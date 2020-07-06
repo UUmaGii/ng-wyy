@@ -1,0 +1,69 @@
+<div class="m-player">
+  <div class="lock">
+    <div class="left"><i></i></div>
+  </div>
+
+  <div class="hand"></div>
+
+  <div class="container">
+    <div class="wrap">
+      <div class="btns">
+        <i class="prev" (click)="onPrev(currentIndex - 1)"></i>
+        <i class="toggle" [class.playing] = "playing" (click)="onToggle()"></i>
+        <i class="next" (click)="onNext(currentIndex + 1)"></i>
+      </div>
+
+      <div class="head">
+        <img [src]="PicUrl" alt="">
+        <a href="" class="mask"></a>
+      </div>
+  
+      <div class="play">
+        <div class="words clearfix">
+          <p class="ellipsis margin-bottom-none">{{currentSong?.name}}</p>
+          <ul class="songs clearfix margin-bottom-none">
+            <li *ngFor="let item of currentSong?.ar; last as isLast">
+              <a href="">{{item.name}}</a>
+              <span [hidden] = "isLast">/</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="bar">
+          <div class="slider-wrap">
+            <app-wy-slider [bufferOffset] = "bufferOffset" [(ngModel)] ="songPercent" (wyOnAfterChange)="onPercentChange($event)"></app-wy-slider>
+          </div>
+          <span class="time">
+            <em>{{currentTime | timeFormat}}</em> / {{duration | timeFormat}}
+          </span>
+        </div>
+      </div>
+        
+      <div class="oper">
+        <i class="like" title="收藏"></i>
+        <i class="share" title="分享"></i>
+      </div>
+      <div class="ctrl">
+        <i class="volume" title="音量"></i>
+        <i class="loop" title="循环"></i>
+        <p class="open">
+          <span></span>
+        </p>
+
+        <div class="control-vol">
+          <app-wy-slider [wyVertical] = "true" [(ngModel)] ="volume" (ngModelChange)="onVolumeChange($event)"></app-wy-slider>
+        </div>
+      </div>
+       
+    </div>
+
+   
+  </div>
+</div>
+
+<audio
+  #audio
+  [src] = "currentSong?.url"
+  (canplay) = "onCanPlay()"
+  (timeupdate) = "onTimeUpdate($event)"
+></audio>

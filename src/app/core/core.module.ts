@@ -10,6 +10,7 @@ import zh from '@angular/common/locales/zh';
 import { SharedModule } from '../shared/shared.module';
 import { PagesModule } from '../pages/pages.module';
 import { ServiceModule } from '../service/service.module';
+import { AppStoreModule } from '../store';
 
 registerLocaleData(zh);
 
@@ -22,7 +23,8 @@ registerLocaleData(zh);
     HttpClientModule,
     SharedModule,
     PagesModule,
-    ServiceModule
+    ServiceModule,
+    AppStoreModule
   ],
   exports: [
     SharedModule,
