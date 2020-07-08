@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter, ViewChildren, ElementRef, QueryList } from '@angular/core';
 import { Song } from 'src/app/service/data Types/common.type';
 import { WyScrollComponent } from '../wy-scroll/wy-scroll.component';
+import { findIndex } from 'src/app/utils/array';
 
 @Component({
   selector: 'app-wy-player-panel',
@@ -9,7 +10,6 @@ import { WyScrollComponent } from '../wy-scroll/wy-scroll.component';
 })
 export class WyPlayerPanelComponent implements OnInit, OnChanges {
   @Input() songList: Song[];
-  @Input() currentIndex: number;
   @Input() currentSong: Song;
   @Input() ListPanelShow: boolean;
 
@@ -17,6 +17,8 @@ export class WyPlayerPanelComponent implements OnInit, OnChanges {
   @Output() onClose = new EventEmitter();
 
   scrollY = 0;
+  currentIndex: number;
+
 
   @ViewChildren(WyScrollComponent) private wyScroll: QueryList<WyScrollComponent>;
   constructor() { }
@@ -25,9 +27,9 @@ export class WyPlayerPanelComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    // console.log('currentSong:', this.currentSong)
     if (changes['currentSong']){
       if (this.currentSong){
+        this.currentIndex = findIndex(this.songList, this.currentSong);
         if (this.ListPanelShow){
           this.scrollToCurrent();
         }
@@ -38,6 +40,11 @@ export class WyPlayerPanelComponent implements OnInit, OnChanges {
       if (!changes['ListPanelShow'].firstChange && this.ListPanelShow){
         this.wyScroll.first.refreshScroll();
         this.wyScroll.last.refreshScroll();
+        if(this.currentSong){
+          setTimeout(() => {
+            this.scrollToCurrent(0);
+          }, 80);
+        }
       }
     }
   }
@@ -46,9 +53,7 @@ export class WyPlayerPanelComponent implements OnInit, OnChanges {
     const songListRefs = this.wyScroll.first.el.nativeElement.querySelectorAll('ul li');
     const currentLi = songListRefs[this.currentIndex || 0];
     const LiOffsetTop = currentLi.offsetTop;
-    console.log('LiOffsetTop:', LiOffsetTop);
-    console.log('scrollY:', this.scrollY);
-    if((LiOffsetTop - Math.abs(this.scrollY)) > currentLi.offsetHeight * 5 || LiOffsetTop < Math.abs(this.scrollY)){
+    if ((LiOffsetTop - Math.abs(this.scrollY)) > currentLi.offsetHeight * 5 || LiOffsetTop < Math.abs(this.scrollY)){
       this.wyScroll.first.scrollToElement(currentLi, speed, false, false);
     }
   }
