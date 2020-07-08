@@ -48,7 +48,7 @@
       <div class="ctrl">
         <i class="volume" title="音量" (click)="toggleVolPanel($event)"></i>
         <i [ngClass]="currentMode.type" [title]="currentMode.label" (click)="changeMode()"></i>
-        <p class="open">
+        <p class="open" (click)="showLylicPanel()">
           <span></span>
         </p>
 
@@ -57,6 +57,14 @@
         </div>
       </div>
        
+      
+      <app-wy-player-panel
+        [songList] = "songList"
+        [currentIndex]="currentIndex"
+        [ListPanelShow] = "ListPanelShow"
+        (onClose)="this.ListPanelShow = false"
+        (onChangeSong) = "onChangeSong($event)"
+      ></app-wy-player-panel>
     </div>
 
    

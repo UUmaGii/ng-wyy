@@ -49,6 +49,7 @@ export class WyPlayerComponent implements OnInit {
 
   currentMode: PlayMode;
   ModeCount = 0;
+  ListPanelShow: false;
 
   constructor(
     private store$: Store<AppStoreModule>,
@@ -183,13 +184,16 @@ export class WyPlayerComponent implements OnInit {
     this.audioEl.volume = per / 100;
   }
   toggleVolPanel(evt: Event){
-    evt.stopPropagation();
-    this.togglePanel();
+    this.isShowPanel('isShowVolumePanel');
   }
 
-  togglePanel(){
-    this.isShowVolumePanel = !this.isShowVolumePanel;
-    if (this.isShowVolumePanel){
+  showLylicPanel(){
+    this.isShowPanel('ListPanelShow');
+  }
+
+  isShowPanel(type: string){
+    this[type] = !this[type];
+    if (this[type]){
       this.bindDocumentClickListen();
     }else{
       this.unbindDocumentClickListen();
@@ -201,6 +205,7 @@ export class WyPlayerComponent implements OnInit {
       this.winClick = fromEvent(this.doc, 'click').subscribe(() => {
         if (!this.selfClick){
           this.isShowVolumePanel = false;
+          this.ListPanelShow = false;
           this.unbindDocumentClickListen();
         }
         this.selfClick = false;
@@ -216,5 +221,9 @@ export class WyPlayerComponent implements OnInit {
 
   changeMode(){
     this.store$.dispatch(SetPlayMode({playMode: modeType[++this.ModeCount % 3]}));
+  }
+
+  onChangeSong(song){
+    this.updateCurrentIndex(this.playList, song);
   }
 }
