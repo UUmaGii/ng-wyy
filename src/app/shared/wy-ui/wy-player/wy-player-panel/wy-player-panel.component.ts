@@ -2,6 +2,8 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitte
 import { Song } from 'src/app/service/data Types/common.type';
 import { WyScrollComponent } from '../wy-scroll/wy-scroll.component';
 import { findIndex } from 'src/app/utils/array';
+import { SongService } from 'src/app/service/song.service';
+import { WyLyric, BaseLyricLine } from './wy-lyric';
 
 @Component({
   selector: 'app-wy-player-panel',
@@ -19,9 +21,11 @@ export class WyPlayerPanelComponent implements OnInit, OnChanges {
   scrollY = 0;
   currentIndex: number;
 
+  currentLyric: BaseLyricLine[];
+  private lyric: WyLyric;
 
   @ViewChildren(WyScrollComponent) private wyScroll: QueryList<WyScrollComponent>;
-  constructor() { }
+  constructor(private SongService: SongService) { }
 
   ngOnInit(): void {
   }
@@ -30,6 +34,7 @@ export class WyPlayerPanelComponent implements OnInit, OnChanges {
     if (changes['currentSong']){
       if (this.currentSong){
         this.currentIndex = findIndex(this.songList, this.currentSong);
+        this.updateLyric();
         if (this.ListPanelShow){
           this.scrollToCurrent();
         }
@@ -40,7 +45,7 @@ export class WyPlayerPanelComponent implements OnInit, OnChanges {
       if (!changes['ListPanelShow'].firstChange && this.ListPanelShow){
         this.wyScroll.first.refreshScroll();
         this.wyScroll.last.refreshScroll();
-        if(this.currentSong){
+        if (this.currentSong){
           setTimeout(() => {
             this.scrollToCurrent(0);
           }, 80);
@@ -58,5 +63,12 @@ export class WyPlayerPanelComponent implements OnInit, OnChanges {
     }
   }
 
+  private updateLyric(){
+    this.SongService.getLyric(this.currentSong.id).subscribe(res => {
+      console.log(res);
+      this.lyric = new WyLyric(res);
+      this.currentLyric = this.lyric.lines;
+    });
+  }
 
 }

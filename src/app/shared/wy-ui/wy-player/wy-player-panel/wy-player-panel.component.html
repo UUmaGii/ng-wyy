@@ -9,7 +9,7 @@
       <div class="clear-all">
         <i class="icon trush" title="清除"></i>清除
       </div>
-      <p class="playing-name">当前歌曲名</p>
+      <p class="playing-name">{{currentSong?.name}}</p>
       <i class="icon close" (click)="onClose.emit()"></i>
     </div>
   </div>
@@ -39,8 +39,12 @@
       </ul>
     </app-wy-scroll>
 
-    <div class="list-lyric">
-      歌词
-    </div>
+    <app-wy-scroll class="list-lyric">
+      <ul>
+        <li *ngFor="let item of currentLyric">
+          {{item.txt}} <br> {{item.txtCn}}
+        </li>
+      </ul>
+    </app-wy-scroll>
   </div>
 </div>

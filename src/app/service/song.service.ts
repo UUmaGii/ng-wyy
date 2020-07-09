@@ -2,7 +2,7 @@ import { Injectable, Inject} from '@angular/core';
 import { ServiceModule, API_CONFIG } from './service.module';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, pluck } from 'rxjs/internal/operators';
-import { songSheet, Song, SongUrl } from './data Types/common.type';
+import { songSheet, Song, SongUrl, Lyric } from './data Types/common.type';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -28,10 +28,21 @@ export class SongService {
     const result = [];
     songs.forEach(song => {
       const url = urls.find(songUrl => songUrl.id === song.id).url;
-      if(url){
+      if (url){
         result.push({...song, url});
       }
     });
     return result;
+  }
+
+  getLyric(id: number): Observable<Lyric>{
+    const params = new HttpParams().set('id', id.toString());
+    return this.http.get(this.url + 'lyric', {params}).pipe(map((res: {[key: string]: {lyric: string}}) => {
+      return {
+        lyric: res.lrc.lyric,
+        tlyric: res.tlyric.lyric
+      }
+    }));
+    // return this.http.get(this.url + 'lyric', {params}).pipe(map((res) => res as Lyric));
   }
 }

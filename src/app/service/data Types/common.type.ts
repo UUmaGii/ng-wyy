@@ -53,5 +53,10 @@ export type songSheet = {
 export interface SongUrl {
     id: number;
     url: string;
-  }
-  
+}
+
+
+export type Lyric = {
+    lyric: string,
+    tlyric: string
+}
